@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+p {
+    height:40px;
+    line-height:20px; /* Height / no. of lines to display */
+    overflow:hidden;
+}
+</style>
+<body class="app">   	
+<div class="app-wrapper">
+<div class="app-content pt-3 p-md-3 p-lg-4">
+	<div class="container-xl">
+			<div class="position-relative mb-3">
+		<div class="row g-3 justify-content-between">
+			<div class="col-auto">
+			{% if user.role == 'S' %}
+			<h1 class="app-page-title mb-0">Your Contributions (Total={{count}})</h1>
+			{% elif user.role == 'MC' %}
+			<h1 class="app-page-title mb-0">Contributions of {{contributions.0.faculty.get_name_display}} Faculty (Total={{count}})</h1>			
+			{% else %}
+			<h1 class="app-page-title mb-0">Selected Contributions for Magazine (Total={{count}})</h1>
+			{% endif %}
+			</div>
+			<div class="col-auto">
+			{% if user.role == "S" %}
+				<div class="page-utilities">
+					<a href='{% url 'post-contribution' %}' class="btn app-btn-primary">Post Contribution</a>
+				</div><!--//page-utilities-->
+			{% elif user.role == "MC" %}
+				<div class="page-utilities">
+					<a href='{% url 'selected' %}' class="btn app-btn-primary">Selected</a>
+					<a href='{% url 'not-selected' %}' class="btn app-btn-primary">Not Selected</a>
+					<a href='{% url 'home' %}' class="btn app-btn-primary">All</a>
+				</div>
+			{% endif %}
+			</div>	
+		</div>
+	</div>
+{% for message in messages %}
+<div class="alert alert-warning" role="alert">
+{{ message}}
+</div>
+{% endfor %}
+{% for contribution in contributions %}
+<div class="app-card app-card-notification shadow-sm mb-4">
+	<div class="app-card-header px-4 py-3">
+		<div class="row g-3 align-items-center">
+		{% if user.role != 'S' %}
+			<div class="col-12 col-lg-auto text-center text-lg-left">						        
+				<a href={% url 'user-profile' contribution.author.id %}>
+				<div class="col-auto">
+					<img class="profile-image" src="{{contribution.author.image.url}}" alt=""> </div>
+				</a>
+			</div><!--//col-->
+		{% endif %}
+		
+			<div class="col-12 col-lg-auto text-center text-lg-left">
+				{% if contribution.is_selected %}
+					{% if user.role == 'S' or user.role == 'MC' %}
+					<div class="notification-type mb-2">
+						<span class="badge bg-info">SELECTED FOR MAGAZINE</span>
+					</div>
+					{% else %}
+					<div class="notification-type mb-2">
+						<span class="badge bg-info">{{countribution.faculty.get_name_display}}</span>
+					</div>
+					{% endif %}
+				{% endif %}
+				<h1 class="notification-title mb-2">{{contribution.title}}</h1>
+				<ul class="notification-meta list-inline mb-0">
+					<li class="list-inline-item">{{contribution.date_posted}}</li>
+				{% if user.role != 'S' %}
+					<li class="list-inline-item">|</li>
+					<li class="list-inline-item">{{contribution.author.name}}</li>
+				</ul>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+
+<div class="app-card-body p-4">
+	<div class="notification-content"><p class="h7">{{contribution.paragraphs}}</p></div>
+</div><!--//app-card-body-->
+{% if user.role == "S" %}
+<div class="app-card-footer px-4 py-3">
+	<a class="btn app-btn-primary" href="{% url 'edit-contribution' contribution.id %}">Edit</a>	
+	<a class="btn app-btn-primary" href="{% url 'delete-contribution' contribution.id %}">Delete</a>
+	<a class="btn app-btn-primary" href="{% url 'detail-contribution' contribution.id %}">View More</a>
+</div>
+{% elif user.role == "MC" %}
+<div class="app-card-footer px-4 py-3">
+	{% if contribution.is_selected %}
+		<a href="{% url 'deselect-contribution' contribution.id %}" class="btn app-btn-primary">Deselect Contribution</a>
+	{% else %}
+		<a href="{% url 'select-contribution' contribution.id %}" class="btn app-btn-primary">Select for Magazine</a>
+	{% endif %}
+	<a class="btn app-btn-primary" href="{% url 'detail-contribution' contribution.id %}">View More</a>
+</div>
+{% else %}
+<div class="app-card-footer px-4 py-3">
+	<a class="action-link" href="{% url 'detail-contribution' contribution.id %}">View more<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right ml-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+	<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+	</svg></a>
+</div>
+{% endif %}
+
+</div>
+{% endfor %}
+<nav class="app-pagination">
+	<ul class="pagination justify-content-center">
+      {% if contributions.has_previous %}
+	<li class="page-item disabled">
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ contributions.previous_page_number }}">Previous</a>
+     </li> 
+	  {% endif %}
+
+      {% for num in contributions.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > contributions.number|add:'-3' and num < contributions.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if contributions.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ contributions.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ contributions.paginator.num_pages }}">Last</a>
+      {% endif %}
+	</ul>
+</nav><!--//app-pagination-->
+</body> 
+{% endblock content %}

@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% if form.errors %}
+<ul class='form-errors'>
+{% for error in form.errors %}
+<div class="alert alert-warning" role="alert">
+{{ error }}
+</div>
+{% endfor %}
+</ul>
+{% endif %}
+<div class="app-wrapper">
+
+<div class="app-content pt-3 p-md-3 p-lg-4">
+<div class="container-xl">
+
+	<div class="position-relative mb-3">
+	<div class="row g-3 justify-content-between">
+		<div class="col-auto">
+		<h1 class="app-page-title mb-0">{{object.author.name}} [ {{object.date_posted}} ]</h1>
+		</div>
+		<div class="col-auto">
+			<div class="page-utilities">
+			{% if user.role == "MM" %}
+			<a href="http://127.0.0.1:8000/images/{{object.word_docu.name}}.zip" class="btn app-btn-primary" download>
+			<span class="nav-icon">
+				<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+				<path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+				</svg>
+			</span>
+			<span class="nav-link-text">Download as Zip</span>
+			</a>
+			{% elif user.role == "MC" %}
+			<a href="{% url 'user-profile' object.author.id %}" class="btn app-btn-primary">Contact Author</a>
+			{% if object.is_selected %}
+			<a href="{% url 'deselect-contribution' object.id %}" class="btn app-btn-primary">Deselect Contribution</a>
+			{% else %}
+			<a href="{% url 'select-contribution' object.id %}" class="btn app-btn-primary">Select Contribution</a>
+			{% endif %}
+			{% elif user.role == "S" %}
+			<a href="{% url 'edit-contribution' object.id %}" class="btn app-btn-primary">Edit Contribution</a>
+			{% endif %}
+				
+			</div><!--//page-utilities-->
+		</div>
+	</div><br>
+{% for message in messages %}
+<div class="alert alert-warning" role="alert">
+{{ message}}
+</div>
+{% endfor %}
+<div class="app-card app-card-accordion shadow-sm mb-4">
+
+	<div class="app-card-header p-4 pb-2  border-0">
+		<h1 class="text-info">{{title_contrib}}</h1><br>	
+	</div><!--//app-card-header-->
+	<div class="app-auth-branding mb-4">
+		<div class="mx-auto" style="max-width: 450px;">
+			<img  class="img-thumbnail" src="{{object.images.url}}" alt="image"></a>
+		</div>
+<br><br>
+	<div class="app-card-body p-4 pt-0">
+
+	<div id="faq1-accordion" class="faq1-accordion faq-accordion accordion">
+		<div class="card-body">
+		{% for pargraph in docx_paras %}
+		<strong><p style="text-indent:50px;" class="text-dark">{{pargraph}}</p></strong>
+		{% endfor %}
+		</div>
+	</div>
+	{% if object.images2 %}
+	<div class="mx-auto" style="max-width: 450px;">
+		</a><img  class="img-thumbnail" src="{{object.images2.url}}" alt="image"></a>
+	</div><br>
+	{% endif %}
+	<div class="card-body">
+	{% if object.images3 %}
+	<div class="mx-auto" style="max-width: 450px;">
+		<img  class="img-thumbnail" src="{{object.images3.url}}" alt="image"></a>
+	</div><br>
+	{% endif %}
+	<div class="card-body">
+
+
+
+
+<div id="faq1-accordion" class="faq1-accordion faq-accordion accordion">
+<div class="card">
+<div class="card-header" id="faq1-heading-1">
+<h4 class="card-title">
+	{% if user.role == 'MC' %}
+		{% if comment %}
+		<button class="card-toggle btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#faq1-1" aria-expanded="false" aria-controls="faq1-1"><span class="pe-icon pe-7s-plus">	</span>
+		View your comment here!</button>
+		{% else %}
+		<button class="card-toggle btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#faq1-1" aria-expanded="false" aria-controls="faq1-1"><span class="pe-icon pe-7s-plus">	</span>
+		Make a comment for this contribution?</button>
+		{% endif %}
+	{% elif user.role == "S" %}
+		{% if comment %}
+		<button class="card-toggle btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#faq1-1" aria-expanded="false" aria-controls="faq1-1"><span class="pe-icon pe-7s-plus">	</span>
+		Tab here to see what Marketing Coordinator of {{object.faculty.get_name_display}} commented.</button>
+		{% else %}
+		<button class="card-toggle btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#faq1-1" aria-expanded="false" aria-controls="faq1-1"><span class="pe-icon pe-7s-plus">	</span>
+		No comments yet!</button>
+		{% endif %}
+	{% endif %}
+	
+</h4>
+</div>
+<div class="panel-collapse collapse" id="faq1-1" aria-labelledby="faq1-heading-1" data-parent="#faq1-accordion">
+	<div class="card-body">
+	{% if user.role == "MC" %}
+		{% if comment %}
+			<p>{{comment.comment}}</p><br>
+			<a class="btn app-btn-primary" href="{% url 'edit-comment' comment.id %}">Edit</a>
+			<a class="btn app-btn-primary" href="{% url 'delete-comment' comment.id %}">Delete</a>
+		{% else %}
+			<form action="{% url 'write-comment' object.id %}" class="settings-form" method="POST">
+			{% csrf_token %}
+				<div class="mb-3">
+					<label for="setting-input-2" class="form-label">
+					Comment within 14 days after the date of contribution is posted :</label>
+					<textarea  name="comment" class="form-control" id = "exampleFormControlTextarea5" placeholder="Write a comment ..." rows="5" style="height:20%;" required></textarea>
+				</div>
+				<button type="submit" class="btn app-btn-primary" >Comment Now</button>
+			</form>
+		{% endif %}
+	{% elif user.role == "S" %}
+		{% if comment %}
+			<p>{{comment.comment}}</p>
+		{% else %}
+			<p>Please wait patiently for the Marketing Coordinator to comment.</p>
+		{% endif %}
+	{% endif %}
+	</div>
+</div>
+</div>
+</div>
+{% endblock content %}
+

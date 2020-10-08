@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}
+{% block content %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Static Example</title>
+  <style>body {font-family: Arial, sans-serif;}</style>
+  
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+  <!-- Fengyuan Chen's Datepicker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div class="app-wrapper">
+
+		<div class="app-content pt-3 p-md-3 p-lg-4">
+		<div class="container-xl">
+		{% for message in messages %}
+		<div class="alert alert-warning" role="alert">
+		{{ message}}
+		</div>
+		{% endfor %}
+		<div class="app-card app-card-accordion shadow-sm mb-4">
+			<div class="app-card app-card-settings shadow-sm p-4">
+								
+				<div class="app-card-body">
+					<form class="settings-form" enctype="multipart/form-data" method="POST" id="prospects_form">
+					<h1>Update your profile here!</h1><br>
+						{% if form.errors %}
+						<div class="alert alert-warning" role="alert">
+						Please fix the errors below!
+						</div>
+						{% endif %}
+					{% csrf_token %}
+						<div class="row">
+							<div class="mb-3">
+								<div class="mx-auto" style="max-width: 300px;">
+									<a href="https://made4dev.com"><img  class="img-thumbnail" id="output"></a>
+								</div><br>	
+								<label for="setting-input-3" class="form-label">Upload Image: </label>
+								{{form.image}}<br><br>
+								{{form.role}}
+								<label for="setting-input-3" class="form-label">Full Name: </label><br>
+								{{form.name}}<br>
+								<label for="setting-input-3" class="form-label">Gender: </label>
+								{{form.gender}}<br>
+								{% if form.errors.email %}
+								<div class="alert alert-warning" role="alert">{{form.errors.email}}</div>
+								{% endif %}
+								<label for="setting-input-3" class="form-label">Email Address: </label>
+								{{form.email}}<br>
+								<label for="setting-input-3" class="form-label">Student Number: </label>
+								{{form.student_number}}<br>
+								<label for="setting-input-3" class="form-label">Faculty: </label>
+								{{form.faculty}}<br>
+								<label for="setting-input-3" class="form-label">Mobile: </label>
+								{{form.phone_number}}<br>
+								<div class="form-group green-border-focus">
+								<label for="setting-input-3" class="form-label">Address: </label>
+								{{form.address}}<br>
+								</div>
+							</div>
+							<button type="submit" class="btn app-btn-primary" >Update</button>
+					</form>
+				</div><!--//app-card-body-->
+						</div>
+				<div class="app-auth-branding mb-4">
+			</div>
+		</div>	
+	</div>
+  <script>
+    var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+    URL.revokeObjectURL(output.src) // free memory
+    }
+  };
+  </script>
+
+</body>
+</html>
+{% endblock content %}
+
+ 

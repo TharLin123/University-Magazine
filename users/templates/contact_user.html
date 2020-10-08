@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+</style>
+<div class="app-wrapper">
+<div class="app-content pt-3 p-md-3 p-lg-4">
+	<div class="container-xl">			    
+		<h1 class="app-page-title">Contact Contribution's Author</h1>
+		{% for message in messages %}
+<div class="alert alert-warning" role="alert">
+{{ message}}
+</div>
+{% endfor %}
+		<hr class="mb-4">
+		<div class="row g-4 settings-section">
+			<div class="col-12 col-md-4">
+				<h3 class="section-title">Send Gmail</h3>
+				<div class="section-intro">
+					Send the author of the contribution to inform him/her about what you want to edit about it or inform them that their contribution is selected for the magazine.	
+				</div>
+				</div>
+			<div class="col-12 col-md-8">
+				<div class="app-card app-card-settings shadow-sm p-4">
+					
+		<div class="app-card-body">
+			<form class="settings-form" action="{% url 'send-mail' author.id %}" method="POST" %}>
+				<div class="mb-3">
+							{% csrf_token %}
+						<div class="mb-3">
+							<label for="setting-input-3" class="form-label">Subject:</label>
+							<input type="text" class="form-control" name='subject' id="setting-input-3" value="Informing to select and edit contribution ">
+						</div>
+						<div class="mb-3">
+							<label for="setting-input-3" class="form-label">Your Message:</label>
+							<textarea style="height: 120px;" name='body' class="form-control" id="setting-input-3" placeholder="Write here..." autofocus></textarea>
+						</div>
+						<button type="submit" class="btn app-btn-primary" >Send Now</button>
+					</form>
+				</div><!--//app-card-body-->
+						</div><!--//app-card-->
+	                </div>
+				</div><!--//row-->
+				<hr class="my-4">
+				<div class="row g-4 settings-section">
+				<div class="col-12 col-md-4">
+					<h3 class="section-title">Contact Information</h3>
+					<div class="section-intro">
+					Contact information of the author student is given beside so you may interact with them about the contribution which might be really useful.</div>
+				</div>
+				<div class="col-12 col-md-8">
+					<div class="app-card app-card-settings shadow-sm p-4">
+						<div class="app-card-body">
+							<table class="table">
+								<tr>
+									<th scope="row">
+									<div class="mx-auto" style="max-width: 150px;">
+										<a href="https://made4dev.com"><img  class="img-thumbnail" src="{{author.image.url}}" alt="image"></a>
+									</div>
+									</th>
+									<th scope="row">
+									<div class="mb-2"><label for="setting-input-2" class="form-label">Name:</label>{{author.name}}</div>
+									<div class="mb-2"><label for="setting-input-2" class="form-label">Faculty:</label>{{author.faculty.get_name_display}}</div>
+									<div class="mb-2"><label for="setting-input-2" class="form-label">Student No:</label>{{author.student_number}}</div>
+									<div class="mb-2"><label for="setting-input-2" class="form-label">Email:</label>{{author.email}}</div>
+									<div class="mb-2"><label for="setting-input-2" class="form-label">Mobile:</label>{{author.phone_number}}</div>
+									<div class="mb-2"><label for="setting-input-2" class="form-label">Address:</label>{{author.address}}</div>
+									</th>
+								</tr>
+							</table>
+	
+							
+							<div class="row justify-content-between">
+							</div>
+						</div><!--//app-card-body-->
+					</div><!--//app-card-->
+				</div>
+			</div><!--//row-->
+{% endblock content %}

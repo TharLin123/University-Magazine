@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}
+{% block content %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Static Example</title>
+  <style>body {font-family: Arial, sans-serif;}</style>
+  
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+  <!-- Fengyuan Chen's Datepicker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div class="app-wrapper">
+
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
+    {% for message in messages %}
+    <div class="alert alert-warning" role="alert">
+    {{ message}}
+    </div>
+    {% endfor %}
+		<div class="app-card app-card-accordion shadow-sm mb-4">
+			<div class="app-card app-card-settings shadow-sm p-4">
+								
+				<div class="app-card-body">
+					<h1>Your Profile</h1><br>
+
+                            <div class="mx-auto" style="max-width: 250px;">
+                                <a href="https://made4dev.com"><img  class="img-thumbnail" src="{{profile.image.url}}" alt="image"></a>
+                            </div><br>
+                        <div class="text-center">
+                            <div class="mb-2"><label for="setting-input-2" class="form-label">Name:</label>{{profile.name}}</div>
+                            <div class="mb-2"><label for="setting-input-2" class="form-label">Gender:</label>{{profile.get_gender_display}}</div>
+                            <div class="mb-2"><label for="setting-input-2" class="form-label">Faculty:</label>{{profile.faculty.get_name_display}}</div>
+                            <div class="mb-2"><label for="setting-input-2" class="form-label">Student No:</label>{{profile.student_number}}</div>
+                            <div class="mb-2"><label for="setting-input-2" class="form-label">Email:</label>{{profile.email}}</div>
+                            <div class="mb-2"><label for="setting-input-2" class="form-label">Mobile:</label>{{profile.phone_number}}</div>
+                            <div class="mb-2"><label for="setting-input-2" class="form-label">Address:</label>{{profile.address}}</div>
+                            <a href="{% url 'edit-profile' %}" class="btn app-btn-primary">Edit Profile</a>
+                        </div>
+				</div><!--//app-card-body-->
+						</div>
+				<div class="app-auth-branding mb-4">
+			</div>
+		</div>	
+	</div>
+  <script>
+    var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+    URL.revokeObjectURL(output.src) // free memory
+    }
+  };
+  </script>
+
+</body>
+</html>
+{% endblock content %}
+
+ 

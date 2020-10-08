@@ -1,0 +1,10 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.pythonPath": "/Users/tharlinhtet/Documents/Django/DjangoVenv/bin/python3",
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "--errors-only"
+    ],
+    "python.linting.flake8Enabled": false,
+}
