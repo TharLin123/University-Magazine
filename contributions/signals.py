@@ -49,7 +49,10 @@ def create_profile(sender,instance,created,**kwargs):
     to make a comment within 14 days which is until <h3>{date.strftime('%d %B %Y')}.</h3></p>"""
 
     if created:
-        send_mail(subject=subject,html=html,to_email=receiver)
+        try:
+            send_mail(subject=subject,html=html,to_email=receiver)
+        except:
+            pass
         
         
 

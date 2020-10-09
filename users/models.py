@@ -40,36 +40,50 @@ class User(AbstractUser):
     REQUIRED_FIELDS = [] # Email & Password are required by default.
 
     objects = UserManager()
+
+class AcademicYear(models.Model):
+    years = (   
+        ('1',2015),
+        ('2',2016),
+        ('3',2017), 
+        ('4',2018),
+        ('5',2019),
+        )
+    academic_year = models.CharField(max_length=50,verbose_name='Academic Year',null=True,choices=years,unique=True)
+    new_closure_date = models.DateField(null=True,verbose_name='New Post Closure Date')
+    final_closure_date = models.DateField(null=True,verbose_name='Final Closure Date')
     
+    class Meta:
+        ordering = ['-academic_year']
+        db_table = 'Academic Year'
+        verbose_name = "Academic Year"
+        verbose_name_plural = "Academic Year"
+    
+    def __str__(self):
+        return f'Academic Year {self.get_academic_year_display()}'
 
 class Faculty(models.Model):
     faculties = (   
-    ('IT','Information Technology'),
-    ('BM','Business Management'),
-    ('MS','Medical Science'), 
-    ('ME','Mechantronic Engineering'),
-    ('AF','Accounting and Financial'),
-    )
-    years = (   
-    ('1','1st Academic Year'),
-    ('2','2nd Academic Year'),
-    ('3','3rd Academic Year'), 
-    ('4','4th Academic Year'),
-    ('5','5th Academic Year'),
-    )
-    name = models.CharField(max_length=50,verbose_name='Faculty Name',null=True,choices=faculties,unique=True)
-    academic_year = models.CharField(max_length=50,verbose_name='Academic Year',null=True,choices=years,unique=True)
-    new_closure_date = models.DateField(null=True,verbose_name='New Entries Closure Date')
-    final_closure_date = models.DateField(null=True,verbose_name='Final Closure Date')
+        ('IT','Information Technology'),
+        ('BM','Business Management'),
+        ('MS','Medical Science'), 
+        ('ME','Mechantronic Engineering'),
+        ('AF','Accounting and Financial'),
+        )
+    academic_year = models.ForeignKey(AcademicYear,on_delete=models.CASCADE,null=True)
+    name = models.CharField(max_length=50,verbose_name='Faculty Name',null=True,choices=faculties)
 
 
     class Meta:
+        unique_together = ('name', 'academic_year',)
+        ordering =['academic_year']
         db_table = 'Faculty'
         verbose_name = "Faculty"
         verbose_name_plural = "Faculties"
 
     def __str__(self):
-        return self.get_name_display()
+        return f'{self.get_name_display()} ({self.academic_year.get_academic_year_display()} Academic Year)'
+
 
 
 class Student(User):

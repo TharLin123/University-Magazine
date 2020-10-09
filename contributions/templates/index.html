@@ -17,7 +17,8 @@ p {
 			{% if user.role == 'S' %}
 			<h1 class="app-page-title mb-0">Your Contributions (Total={{count}})</h1>
 			{% elif user.role == 'MC' %}
-			<h1 class="app-page-title mb-0">{{contributions.0.faculty.get_name_display}} Faculty (Total={{count}})</h1>			
+			<h1 class="app-page-title mb-0">{{contributions.0.faculty}}</h1><br>
+			<h5>Total {{count}} Contributions</h5>				
 			{% else %}
 			<h1 class="app-page-title mb-0">Selected Contributions(Total={{count}})</h1>
 			{% endif %}
@@ -25,7 +26,7 @@ p {
 			<div class="col-auto">
 			{% if user.role == "S" %}
 				<div class="page-utilities">
-					<a href='{% url 'post-contribution' %}' class="btn app-btn-primary">Post Contribution</a>
+					<a href="{% url 'post-contribution' %}" class="btn app-btn-primary">Post Contribution</a>
 				</div><!--//page-utilities-->
 			{% elif user.role == "MC" %}
 				<div class="page-utilities">

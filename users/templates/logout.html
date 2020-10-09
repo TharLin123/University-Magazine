@@ -1,1 +1,51 @@
-<a class="dropdown-item" href="{% url 'login' %}">Login</a> again.
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body>
+	<div class="app-wrapper">
+
+<div class="app-content pt-3 p-md-3 p-lg-4">
+<div class="container-xl">
+{% for message in messages %}
+<div class="alert alert-warning" role="alert">
+{{ message}}
+</div>
+{% endfor %}
+<div class="app-card app-card-accordion shadow-sm mb-4">
+	<div class="app-card app-card-settings shadow-sm p-4">
+<div class="app-card-body">
+	<div class="row g-0 app-auth-wrapper">
+		<div class="text-center">
+			<div class="d-flex flex-column align-content-end">
+				<div class="app-auth-body mx-auto">	
+					<div class="app-auth-branding mb-4"><a class="app-logo" href="index.html"><br><br><br>
+					<img class="logo-icon mr-2" src="{% static 'assets/images/app-logo.svg' %}" alt="logo"></a></div>
+					<h2 class="auth-heading text-center mb-5">Log in to Portal</h2>
+					<div class="auth-form-container text-left">
+{% if form.non_field_errors %}
+<ul class='form-errors'>
+{% for error in form.non_field_errors %}
+<div class="alert alert-warning" role="alert">
+	{{ error }}
+</div>
+{% endfor %}
+	</ul>
+{% endif %}
+<div>
+    
+</div >
+	<a style="margin-left: 130px;" href='{% url "login" %}'>Login Again?</a>
+
+</div><!--//auth-form-container-->	
+
+</div><!--//auth-body-->
+</div><!--//app-card-body-->
+</div>
+</div>	
+</div>
+</body>
+{% endblock content %}
+
+
+
+

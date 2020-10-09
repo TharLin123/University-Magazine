@@ -33,7 +33,7 @@ def contact_user(request,pk):
 @login_required
 def profile(request):
     profile_owner = Student.objects.get(id=request.user.id)
-    context = { 'profile' : profile_owner }
+    context = { 'profile' : profile_owner, 'title' : 'Profile' }
     return render(request,'user_profile.html',context)
 
 

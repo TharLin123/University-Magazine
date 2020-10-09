@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import Contribution,Comment
 from .forms import ContributionForm,EditContributionForm
-from users.models import Faculty,Student,Marketing_Coordinator
+from users.models import Faculty,Student,Marketing_Coordinator,AcademicYear
 from django.views.generic import DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -16,16 +16,19 @@ import os
 import docx
 import datetime
 from zipfile import ZipFile
-
+from datetime import timedelta
+from django.utils.timezone import utc
 
 @login_required
 def post_contributions(request):
     if request.method == 'GET':
         student_post = Student.objects.get(id=request.user.id)
         faculty = student_post.faculty
-        closure_date = student_post.faculty.new_closure_date 
+        academy_year = student_post.faculty.academic_year
+        closure_date = academy_year.new_closure_date
         if datetime.date.today() > closure_date:
-            messages.error(request,f'Clousure date ({closure_date.strftime("%d %B %Y")}) has passed. New contributions cannot be posted 😩 but you can still edit the old posts.')
+            print(datetime.date.today()>closure_date)
+            messages.error(request,f'Clousure date ({closure_date.strftime("%d %B %Y")}) has passed. New contributions cannot be posted 😩 ')
             return redirect(request.META['HTTP_REFERER'])
         else:
             form = ContributionForm(initial={'author':student_post,'faculty':faculty})
@@ -111,8 +114,15 @@ def edit_contribution(request,pk):
         messages.success(request,'Contribution updated successfully')
         return redirect('detail-contribution',pk=edit_contribution.id)
     else:
-         form  = EditContributionForm(instance=edit_contribution)
-         context = {'form' : form, 'title':'Edit Contribution'}
+        student_post = Student.objects.get(id=request.user.id)
+        academy_year = student_post.faculty.academic_year
+        final_closure_date = academy_year.final_closure_date
+        if datetime.date.today() > final_closure_date:
+            messages.error(request,f'Clousure date ({final_closure_date.strftime("%d %B %Y")}) has passed. You cannot be post or update the contributions 😩 .')
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            form  = EditContributionForm(instance=edit_contribution)
+    context = {'form' : form, 'title':'Edit Contribution'}
     return render(request,'edit_contributions.html',context)
 
 
@@ -292,15 +302,55 @@ def send_mail(request,pk,html = None):
         messages.error(request,"Something is wrong. Cannot send mail 😤")
     return redirect(request.META['HTTP_REFERER'])
 
+
 def overview(request):
-    contirbution_count = Contribution.objects.all().count()
-    contributor_count = Student.objects.all().count()
-    comment_count = Comment.objects.all().count()
+    search_year = request.GET.get('academic-year')
+    if search_year:
+        academic_year_last = AcademicYear.objects.get(academic_year=search_year)
+    else:
+        academic_year_last = AcademicYear.objects.all().first()
+    academic_year = AcademicYear.objects.all()
+    faculty = Faculty.objects.filter(academic_year=academic_year_last)
+    with_comments = []
+    contribution = []
+    contributor = [] 
+    without_comments = []
+    for facultyy in faculty:
+        contribution_count = Contribution.objects.filter(faculty=facultyy).count()
+        contributions = Contribution.objects.filter(faculty=facultyy)
+        student_count = Student.objects.filter(faculty=facultyy).count()
+        total_comment = Comment.objects.filter(post__faculty=facultyy).count()
+        without_comment = 0
+        for contributionss in contributions:
+            if datetime.date.today() > contributionss.date_posted.date() + timedelta(days = 14):
+                without_comment += 1
+        without_comments.append(without_comment)
+        with_comments.append(total_comment)  
+        contribution.append(contribution_count)
+        contributor.append(student_count)
+    contribution_count_all = sum(contribution)
+    contribution_count_percent = []
+    for contributionn in contribution:
+        try:
+            contribution_count_percent.append((100*contributionn)/contribution_count_all)
+        except:
+            contribution_count_percent.append(0)
+    zipp = zip(faculty,contribution)
+    zipp1 = zip(faculty,contribution_count_percent)
+    zipp2 = zip(faculty,with_comments)
+    zipp3 = zip(faculty,contributor)
+    zipp4 = zip(faculty,without_comments)
     context = {
         'title' : 'Overview',
-        'total_contribution' : contirbution_count,
-        'contributor' : contributor_count,
-        'comment' : comment_count,
-        'percent' : 20
+        'faculty' : faculty,
+        'academic_year' : academic_year,
+        'academic_year_last' : academic_year_last,
+        'percent' : 3,
+        'contribution' : contribution,
+        'zipp' : zipp,
+        "zipp1" : zipp1,
+        'zipp2' : zipp2,
+        'zipp3' : zipp3,
+        'zipp4' : zipp4
     }
     return render(request,'overview.html',context)

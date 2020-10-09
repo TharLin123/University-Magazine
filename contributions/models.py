@@ -36,7 +36,7 @@ class Comment(models.Model):
         verbose_name_plural = 'Comments'
 
     def __str__(self):
-        return f"{self.commenter} made a comment to {post.title}."
+        return f"{self.commenter} made a comment to {self.post.title}."
     
 
 
