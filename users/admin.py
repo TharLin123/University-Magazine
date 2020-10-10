@@ -1,11 +1,19 @@
 from django.contrib import admin
-from .models import User,Student,Marketing_Manager,Marketing_Coordinator,Faculty,Guest
+from .models import User,Student,Marketing_Manager,Marketing_Coordinator,Faculty,Guest,Admin
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import PasswordInput,HiddenInput
 from .forms import StudentRegisterForm
 from django import forms
 
 admin.site.site_header = "University Magazine Admin Dashboard"
+
+@admin.register(Admin)
+class AuthorAdmin(admin.ModelAdmin):
+    form = GuestAdminForm
+    verbose_name_plural = ("Guest")
+    list_display = ('name','email')
+    list_display_links = ('name','email')
+
 
 @admin.register(User)
 class AuthorAdmin(admin.ModelAdmin):
