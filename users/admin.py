@@ -9,8 +9,12 @@ admin.site.site_header = "University Magazine Admin Dashboard"
 
 @admin.register(Admin)
 class AuthorAdmin(admin.ModelAdmin):
-    form = GuestAdminForm
-    verbose_name_plural = ("Guest")
+    fields = (
+        'email',
+        'role',
+        'date_joined',
+        'last_login'
+        )
     list_display = ('name','email')
     list_display_links = ('name','email')
 
