@@ -37,6 +37,10 @@ class User(AbstractUser):
     objects = UserManager()
 
 
+class Admin(User):
+    
+
+
 class Faculty(models.Model):
     faculties = (   
     ('IT','Information Technology'),
