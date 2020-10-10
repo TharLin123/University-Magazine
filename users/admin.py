@@ -15,8 +15,8 @@ class AuthorAdmin(admin.ModelAdmin):
         'date_joined',
         'last_login'
         )
-    list_display = ('name','email')
-    list_display_links = ('name','email')
+    list_display = ('email','date_joined')
+    list_display_links = ('email','date_joined')
 
 
 @admin.register(User)
