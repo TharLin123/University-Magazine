@@ -17,6 +17,7 @@ import docx
 import datetime
 from zipfile import ZipFile
 
+
 @login_required
 def post_contributions(request):
     if request.method == 'GET':
