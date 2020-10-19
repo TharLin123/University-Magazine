@@ -14,6 +14,7 @@ urlpatterns = [
     path('selected', views.selected ,name='selected'),
     path('notselected', views.not_selected ,name='not-selected'),
     path('sendmail/<int:pk>', views.send_mail ,name='send-mail'),
+    path('search', views.search ,name='search'),
 ]
 
 

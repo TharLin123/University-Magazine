@@ -35,7 +35,7 @@ def send_mail(subject='Email Subject', body = 'How you doing?', from_email =
 
 @receiver(post_save,sender=Contribution)
 def create_profile(sender,instance,created,**kwargs):
-    post = Contribution.objects.all().last()
+    post = Contribution.objects.all().first()
     url = f"""http://127.0.0.1:8000/contributions/detail/{post.id}"""
     receiver = []
     receiver_model = Marketing_Coordinator.objects.filter(faculty=post.author.faculty)

@@ -247,6 +247,19 @@ def not_selected(request):
 
 
 @login_required
+def search(request):
+    search_faculty = request.GET.get('search')
+    faculty = Faculty.objects.get(name=search_faculty)
+    contributions = Contribution.objects.filter(faculty=faculty,is_selected=True)
+    count = contributions.count() 
+    context = { 
+        "contributions" : contributions,
+        'count': str(count)
+    }
+    return render(request,'index.html',context)
+
+
+@login_required
 def send_mail(request,pk,html = None):
     try:
         username = 'tharlinhtet.mhs@gmail.com'
