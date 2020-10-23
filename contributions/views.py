@@ -155,7 +155,8 @@ def home(request):
     page_obj = paginator.get_page(page_number)
     context = { 
         "contributions" : page_obj,
-        'count': count
+        'count': count,
+        'title' : "Contributions"
     }
     return render(request,'index.html',context)
 
@@ -290,3 +291,16 @@ def send_mail(request,pk,html = None):
     except :
         messages.error(request,"Something is wrong. Cannot send mail 😤")
     return redirect(request.META['HTTP_REFERER'])
+
+def overview(request):
+    contirbution_count = Contribution.objects.all().count()
+    contributor_count = Student.objects.all().count()
+    comment_count = Comment.objects.all().count()
+    context = {
+        'title' : 'Overview',
+        'total_contribution' : contirbution_count,
+        'contributor' : contributor_count,
+        'comment' : comment_count,
+        'percent' : 20
+    }
+    return render(request,'overview.html',context)

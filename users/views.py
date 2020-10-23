@@ -36,6 +36,7 @@ def profile(request):
     context = { 'profile' : profile_owner }
     return render(request,'user_profile.html',context)
 
+
 @login_required
 def edit_profile(request):
     student = Student.objects.get(id=request.user.id)

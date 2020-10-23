@@ -40,13 +40,6 @@ class User(AbstractUser):
     REQUIRED_FIELDS = [] # Email & Password are required by default.
 
     objects = UserManager()
-
-
-class Admin(User):
-    class Meta:
-        db_table = 'Admin'
-        verbose_name = "Admin"
-        verbose_name_plural = "Admins"
     
 
 class Faculty(models.Model):
@@ -57,9 +50,18 @@ class Faculty(models.Model):
     ('ME','Mechantronic Engineering'),
     ('AF','Accounting and Financial'),
     )
+    years = (   
+    ('1','1st Academic Year'),
+    ('2','2nd Academic Year'),
+    ('3','3rd Academic Year'), 
+    ('4','4th Academic Year'),
+    ('5','5th Academic Year'),
+    )
     name = models.CharField(max_length=50,verbose_name='Faculty Name',null=True,choices=faculties,unique=True)
+    academic_year = models.CharField(max_length=50,verbose_name='Academic Year',null=True,choices=years,unique=True)
     new_closure_date = models.DateField(null=True,verbose_name='New Entries Closure Date')
     final_closure_date = models.DateField(null=True,verbose_name='Final Closure Date')
+
 
     class Meta:
         db_table = 'Faculty'
