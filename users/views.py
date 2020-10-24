@@ -6,8 +6,6 @@ from .models import Student
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-
-
 def student_register(request):
     if request.method == 'GET':
         form = StudentRegisterForm()

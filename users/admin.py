@@ -9,7 +9,6 @@ admin.site.site_header = "University Magazine Admin Dashboard"
 
 admin.site.register(Admin)
 
-
 @admin.register(User)
 class AuthorAdmin(admin.ModelAdmin):
     fields = (
@@ -24,6 +23,7 @@ class AuthorAdmin(admin.ModelAdmin):
 class GuestAdminForm(UserCreationForm):
     roles=(('S','Student'),('MC','Marketing Coordinator'),('MM','Marketing Manager'),('G','Guest'),('A','Admin'))
     role = forms.ChoiceField(initial='G',choices=roles,widget=HiddenInput())
+    
 
     class Meta:
         model = Guest
@@ -34,8 +34,8 @@ class GuestAdminForm(UserCreationForm):
             'address',
             'phone_number',
             'email',
-            'password'
             )
+        exclude = ('password1','password2')
         widgets = {
             'role' : HiddenInput(),
             'widget' : PasswordInput()
@@ -52,7 +52,6 @@ class AuthorAdmin(admin.ModelAdmin):
 class StudentAdminForm(UserCreationForm):
     roles=(('S','Student'),('MC','Marketing Coordinator'),('MM','Marketing Manager'))
     role = forms.ChoiceField(initial='S',choices=roles,widget=HiddenInput())
-
     class Meta:
         model = Student
         fields = (
@@ -65,7 +64,6 @@ class StudentAdminForm(UserCreationForm):
             'address',
             'phone_number',
             'email',
-            'password'
             )
         widgets = {
             'role' : HiddenInput(),
@@ -75,6 +73,7 @@ class StudentAdminForm(UserCreationForm):
 @admin.register(Student)
 class AuthorAdmin(admin.ModelAdmin):
     form = StudentAdminForm
+    
     verbose_name_plural = ("Students")
     list_display = ('name','email','student_number','faculty')
     list_display_links = ('name','email')
@@ -95,7 +94,6 @@ class MarketingManagerAdminForm(UserCreationForm):
             'address',
             'phone_number',
             'email',
-            'password'
             )
 
 
@@ -124,7 +122,6 @@ class MarketingCoordinatorAdminForm(UserCreationForm):
             'address',
             'phone_number',
             'email',
-            'password'
             )
 
 
