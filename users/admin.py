@@ -7,16 +7,7 @@ from django import forms
 
 admin.site.site_header = "University Magazine Admin Dashboard"
 
-@admin.register(Admin)
-class AuthorAdmin(admin.ModelAdmin):
-    fields = (
-        'email',
-        'role',
-        'date_joined',
-        'last_login'
-        )
-    list_display = ('email','date_joined')
-    list_display_links = ('email','date_joined')
+admin.site.register(Admin)
 
 
 @admin.register(User)
@@ -31,7 +22,7 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display_links = ('email','role')
 
 class GuestAdminForm(UserCreationForm):
-    roles=(('S','Student'),('MC','Marketing Coordinator'),('MM','Marketing Manager'),('G','Guest'))
+    roles=(('S','Student'),('MC','Marketing Coordinator'),('MM','Marketing Manager'),('G','Guest'),('A','Admin'))
     role = forms.ChoiceField(initial='G',choices=roles,widget=HiddenInput())
 
     class Meta:
@@ -43,6 +34,7 @@ class GuestAdminForm(UserCreationForm):
             'address',
             'phone_number',
             'email',
+            'password'
             )
         widgets = {
             'role' : HiddenInput(),
@@ -73,6 +65,7 @@ class StudentAdminForm(UserCreationForm):
             'address',
             'phone_number',
             'email',
+            'password'
             )
         widgets = {
             'role' : HiddenInput(),
@@ -102,6 +95,7 @@ class MarketingManagerAdminForm(UserCreationForm):
             'address',
             'phone_number',
             'email',
+            'password'
             )
 
 
@@ -130,6 +124,7 @@ class MarketingCoordinatorAdminForm(UserCreationForm):
             'address',
             'phone_number',
             'email',
+            'password'
             )
 
 
