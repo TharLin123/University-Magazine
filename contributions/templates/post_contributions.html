@@ -30,6 +30,7 @@
 						{{form.images}}<br>	<br>
 						<div id="preview" class="mx-auto" style="max-width: 600px;"></div><br>	
 					<label for="setting-input-3" class="form-label">Upload Word Documentation: </label>	<br>		
+					<p>Only files with docx and doc extensions are allowed to upload!</p>
 						{{form.word_docu}}<br>	<br>	<br>	<br>	
 						
 				
@@ -71,6 +72,11 @@ function readAndPreview(file) {
 	}
 }
 document.querySelector('#file-input').addEventListener("change", previewImages);
-
+$(document).ready(function() {
+  $('#file-input').change(function() {
+    if (this.files.length > 3)
+      alert('Max length exceeded .Only first 3 images will be uploaded!')
+  });
+});
 </script>
 {% endblock content %}

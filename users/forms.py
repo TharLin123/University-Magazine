@@ -26,7 +26,7 @@ class StudentRegisterForm(UserCreationForm):
             'address' : forms.Textarea(attrs={"class" : "form-control", "id" : "exampleFormControlTextarea5", 'style':'height:100px;'}),
             'email' : forms.EmailInput(attrs={"class" : "form-control", "id" : "setting-input-1", 'autofocus':False}),
             'password1' : forms.PasswordInput(render_value = True,attrs={"class" : "form-control", "id" : "setting-input-1"}),
-            'password2' : forms.PasswordInput(attrs={"class" : "form-control", "id" : "setting-input-1"}),
+            'password2' : forms.PasswordInput(render_value = True,attrs={"class" : "form-control", "id" : "setting-input-1"}),
         }
 
     def clean_email(self):

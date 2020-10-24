@@ -13,7 +13,9 @@ class Contribution(models.Model):
     paragraphs = models.TextField(null=True,max_length=15000,blank=True, verbose_name='Paragraph1')
     is_selected = models.BooleanField(default=False,verbose_name="Selected")
 
-
+    def __str__(self):
+        return self.title
+    
     class Meta:
         db_table = 'Contributions'
         ordering = ['-date_posted']
@@ -32,6 +34,10 @@ class Comment(models.Model):
         db_table = 'Comments'
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
+
+    def __str__(self):
+        return f"{self.commenter} made a comment to {post.title}."
+    
 
 
 

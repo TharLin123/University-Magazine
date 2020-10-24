@@ -99,6 +99,9 @@ class Marketing_Coordinator(User):
     phone_number = models.CharField(max_length=20,null=True,verbose_name= 'Mobile')
     address = models.TextField(max_length=100,null=True,verbose_name='Address')
 
+    def __str__(self):
+        return self.name
+    
     class Meta:
         db_table = 'Marketing Coordinator'
         verbose_name = 'Marketing Coordinator'
@@ -119,6 +122,10 @@ class Marketing_Manager(User):
         verbose_name = 'Marketing Manager'
         verbose_name_plural = 'Marketing Managers'
 
+    def __str__(self):
+        return self.name
+    
+
 class Guest(User):
     name = models.CharField(max_length=20,null=True,verbose_name= 'Full Name')
     phone_number = models.CharField(max_length=20,null=True,verbose_name= 'Mobile')
@@ -130,4 +137,7 @@ class Guest(User):
         verbose_name = 'Guest'
         verbose_name_plural = 'Guest'
 
+    def __str__(self):
+        return self.name
+    
 

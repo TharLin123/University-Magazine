@@ -45,9 +45,8 @@ def create_profile(sender,instance,created,**kwargs):
         receiver.append(email)
     date = post.date_posted + timedelta(days = 14)
     subject = 'New contribution alert!!'
-    html = f"""<p><h3>{post.author.name}</h3> posted a contribution with the title 
-    <h3>'{post.title}'</h3> on {post.author.faculty.get_name_display()} newsfeed. <a href='{url}'>Click</a> here to read. Don't forget 
-    to make a comment within 14 days which is until <h3>{date}.</h3></p>"""
+    html = f"""<p><h3>{post.author.name}</h3> posted a contribution on {post.author.faculty.get_name_display()} newsfeed. <a href='{url}'>Click</a> here to read. Don't forget 
+    to make a comment within 14 days which is until <h3>{date.strftime('%d %B %Y')}.</h3></p>"""
 
     if created:
         send_mail(subject=subject,html=html,to_email=receiver)

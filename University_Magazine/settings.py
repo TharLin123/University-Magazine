@@ -30,7 +30,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'crispy_forms',
     'contributions.apps.ContributionsConfig',
     'users',
     'django.contrib.admin',

@@ -12,6 +12,7 @@ class ContributionForm(forms.ModelForm):
             'author' : forms.HiddenInput(),
             'faculty' : forms.HiddenInput(),
             'title' : forms.TextInput(attrs={"class" : "form-control", "id" : "setting-input-1", 'autofocus':True}),
+            'word_docu' :forms.FileInput(attrs={'accept':'application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
         }
 
 class EditContributionForm(forms.ModelForm):

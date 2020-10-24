@@ -53,8 +53,8 @@ class GuestAdminForm(UserCreationForm):
 class AuthorAdmin(admin.ModelAdmin):
     form = GuestAdminForm
     verbose_name_plural = ("Guest")
-    list_display = ('name','email','faculty')
-    list_display_links = ('name','faculty')
+    list_display = ('name','email','faculty','role')
+    list_display_links = ('name',)
 
 
 class StudentAdminForm(UserCreationForm):
