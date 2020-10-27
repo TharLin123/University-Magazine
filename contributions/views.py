@@ -320,8 +320,8 @@ def overview(request):
         student_count = Student.objects.filter(faculty=facultyy).count()
         total_comment = Comment.objects.filter(post__faculty=facultyy).count()
         without_comment = 0
-        without_cmds = contribution_count - total_comment
-        for contributionss in without_cmds:
+        contributionn = Contribution.objects.filter(faculty=facultyy,comment__isnull = True)
+        for contributionss in contributionn:
             if datetime.date.today() > contributionss.date_posted.date() + timedelta(days = 14):
                 without_comment += 1
         without_comments.append(without_comment)
