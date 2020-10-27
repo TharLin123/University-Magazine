@@ -27,8 +27,7 @@ def post_contributions(request):
         academy_year = student_post.faculty.academic_year
         closure_date = academy_year.new_closure_date
         if datetime.date.today() > closure_date:
-            print(datetime.date.today()>closure_date)
-            messages.error(request,f'Clousure date ({closure_date.strftime("%d %B %Y")}) has passed. New contributions cannot be posted 😩 ')
+            messages.error(request,f'Clousure date ({closure_date.strftime("%d %B %Y")}) has passed. New contributions cannot be posted.😩 ')
             return redirect(request.META['HTTP_REFERER'])
         else:
             form = ContributionForm(initial={'author':student_post,'faculty':faculty})
@@ -118,7 +117,7 @@ def edit_contribution(request,pk):
         academy_year = student_post.faculty.academic_year
         final_closure_date = academy_year.final_closure_date
         if datetime.date.today() > final_closure_date:
-            messages.error(request,f'Clousure date ({final_closure_date.strftime("%d %B %Y")}) has passed. You cannot be post or update the contributions 😩 .')
+            messages.error(request,f'Final Clousure date ({final_closure_date.strftime("%d %B %Y")}) has passed. You cannot be post or update the contributions 😩 .')
             return redirect(request.META['HTTP_REFERER'])
         else:
             form  = EditContributionForm(instance=edit_contribution)
