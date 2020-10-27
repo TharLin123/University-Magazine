@@ -85,7 +85,6 @@ class Faculty(models.Model):
         return f'{self.get_name_display()} ({self.academic_year.get_academic_year_display()} Academic Year)'
 
 
-
 class Student(User):
     name = models.CharField(max_length=20,null=True,verbose_name= 'Full Name')
     genders = (('M','Male'),('F','Female'))
