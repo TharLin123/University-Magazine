@@ -54,6 +54,7 @@ class AcademicYear(models.Model):
     final_closure_date = models.DateField(null=True,verbose_name='Final Closure Date')
     
     class Meta:
+        ordering = ['-academic_year']
         db_table = 'Academic Year'
         verbose_name = "Academic Year"
         verbose_name_plural = "Academic Year"
@@ -86,6 +87,7 @@ class FacultyAcademicYear(models.Model):
     faculty = models.ForeignKey(Faculty,on_delete= models.CASCADE)
 
     class Meta:
+        unique_together = ('academic_year','faculty')
         ordering = ['-academic_year']
         db_table = 'Faculty Academic Year'
         verbose_name = "Faculty Academic Year"
