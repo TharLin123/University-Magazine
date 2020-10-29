@@ -310,7 +310,6 @@ def overview(request):
         academic_year_last = AcademicYear.objects.all().first()
     academic_year = AcademicYear.objects.all()
     faculty = Faculty.objects.filter(facultyacademicyear__academic_year=academic_year_last)
-    print(faculty.first().name)
     with_comments = []
     contribution = []
     contributor = [] 
@@ -318,7 +317,7 @@ def overview(request):
     for facultyy in faculty:
         contribution_count = Contribution.objects.filter(faculty__faculty=facultyy).count()
         contributions = Contribution.objects.filter(faculty__faculty=facultyy)
-        student_count = Student.objects.filter(faculty__faculty=facultyy).count()
+        student_count = Student.objects.filter(faculty__faculty=facultyy,faculty__academic_year=academic_year_last).count()
         total_comment = Comment.objects.filter(post__faculty__faculty=facultyy).count()
         without_comment = 0
         contributionn = Contribution.objects.filter(faculty__faculty=facultyy,comment__isnull = True)
