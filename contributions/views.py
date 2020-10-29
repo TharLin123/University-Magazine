@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import Contribution,Comment
 from .forms import ContributionForm,EditContributionForm
-from users.models import Faculty,Student,Marketing_Coordinator,AcademicYear
+from users.models import Faculty,Student,Marketing_Coordinator,AcademicYear,FacultyAcademicYear
 from django.views.generic import DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -309,7 +309,7 @@ def overview(request):
     else:
         academic_year_last = AcademicYear.objects.all().first()
     academic_year = AcademicYear.objects.all()
-    faculty = Faculty.objects.filter(academic_year=academic_year_last)
+    faculty = Faculty.objects.filter(facultyacademicyear=academic_year_last)
     with_comments = []
     contribution = []
     contributor = [] 

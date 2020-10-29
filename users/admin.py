@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Student,Marketing_Manager,Marketing_Coordinator,Faculty,Guest,AcademicYear
+from .models import User,Student,Marketing_Manager,Marketing_Coordinator,Faculty,Guest,AcademicYear,FacultyAcademicYear
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import PasswordInput,HiddenInput
 from .forms import StudentRegisterForm
@@ -135,6 +135,12 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(Faculty)
 class AuthorAdmin(admin.ModelAdmin):
     verbose_name_plural = ("Faculties")
-    ordering =('-academic_year',)
+
+
+@admin.register(FacultyAcademicYear)
+class AuthorAdmin(admin.ModelAdmin):
+    ordering = ['-academic_year']
+    list_display = ('academic_year','faculty')
+    list_display_links = ('academic_year','faculty')
 
 admin.site.register(AcademicYear)

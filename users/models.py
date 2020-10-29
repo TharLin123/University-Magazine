@@ -54,7 +54,6 @@ class AcademicYear(models.Model):
     final_closure_date = models.DateField(null=True,verbose_name='Final Closure Date')
     
     class Meta:
-        ordering = ['-academic_year']
         db_table = 'Academic Year'
         verbose_name = "Academic Year"
         verbose_name_plural = "Academic Year"
@@ -70,19 +69,30 @@ class Faculty(models.Model):
         ('ME','Mechantronic Engineering'),
         ('AF','Accounting and Financial'),
         )
-    academic_year = models.ForeignKey(AcademicYear,on_delete=models.CASCADE,null=True)
-    name = models.CharField(max_length=50,verbose_name='Faculty Name',null=True,choices=faculties)
+    name = models.CharField(max_length=50,verbose_name='Faculty Name',null=True,choices=faculties,unique=True)
 
 
     class Meta:
-        unique_together = ('name', 'academic_year',)
-        ordering =['academic_year']
         db_table = 'Faculty'
         verbose_name = "Faculty"
         verbose_name_plural = "Faculties"
 
     def __str__(self):
-        return f'{self.get_name_display()} ({self.academic_year.get_academic_year_display()} Academic Year)'
+        return self.get_name_display()
+
+
+class FacultyAcademicYear(models.Model):
+    academic_year = models.ForeignKey(AcademicYear,on_delete=models.CASCADE)
+    faculty = models.ForeignKey(Faculty,on_delete= models.CASCADE)
+
+    class Meta:
+        ordering = ['-academic_year']
+        db_table = 'Faculty Academic Year'
+        verbose_name = "Faculty Academic Year"
+        verbose_name_plural = "Faculties' Academic Years"
+
+    def __str__(self):
+        return f'{self.faculty.get_name_display()}({self.academic_year.get_academic_year_display()})'
 
 
 class Student(User):
@@ -91,7 +101,7 @@ class Student(User):
     image = models.ImageField(default = 'default.jpg',upload_to = 'student_image',verbose_name='Image')
     gender = models.CharField(choices= genders,max_length=20,verbose_name='Gender')
     student_number = models.CharField(null=True,verbose_name="Student Number",max_length=20)
-    faculty = models.ForeignKey(Faculty,max_length=20,verbose_name='Faculty',null = True,on_delete=models.CASCADE)
+    faculty = models.ForeignKey(FacultyAcademicYear,verbose_name='Faculty',null = True,on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20,null=True,verbose_name= 'Mobile')
     address = models.TextField(max_length=100,null=True,verbose_name='Address')
 
@@ -155,4 +165,3 @@ class Guest(User):
     def __str__(self):
         return self.name
     
-

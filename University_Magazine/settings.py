@@ -77,13 +77,12 @@ WSGI_APPLICATION = 'University_Magazine.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'University Magazine DB',
+        'NAME': 'University Magazine Database',
         'USER' : 'University Magazine Database Admin',
         'PASSWORD' : '123',
         'HOST' : 'localhost',
     }
 }
-
 
 
 AUTH_USER_MODEL = 'users.User'
