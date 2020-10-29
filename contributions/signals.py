@@ -38,14 +38,14 @@ def create_profile(sender,instance,created,**kwargs):
     post = Contribution.objects.all().first()
     url = f"""http://127.0.0.1:8000/contributions/detail/{post.id}"""
     receiver = []
-    receiver_model = Marketing_Coordinator.objects.filter(faculty=post.author.faculty)
+    receiver_model = Marketing_Coordinator.objects.filter(faculty=post.author.faculty.faculty)
 
     for receiver_models in receiver_model:
         email = receiver_models.email
         receiver.append(email)
     date = post.date_posted + timedelta(days = 14)
     subject = 'New contribution alert!!'
-    html = f"""<p><h3>{post.author.name}</h3> posted a contribution on {post.author.faculty.get_name_display()} newsfeed. <a href='{url}'>Click</a> here to read. Don't forget 
+    html = f"""<p><h3>{post.author.name}</h3> posted a contribution on {post.author.faculty.faculty.get_name_display()} newsfeed. <a href='{url}'>Click</a> here to read. Don't forget 
     to make a comment within 14 days which is until <h3>{date.strftime('%d %B %Y')}.</h3></p>"""
 
     if created:

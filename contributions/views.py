@@ -23,14 +23,14 @@ from django.utils.timezone import utc
 def post_contributions(request):
     if request.method == 'GET':
         student_post = Student.objects.get(id=request.user.id)
-        faculty = student_post.faculty
-        academy_year = student_post.faculty.academic_year
-        closure_date = academy_year.new_closure_date
+        faculty_academic_year = student_post.faculty
+        academy_year = student_post.faculty.academic_year.academic_year
+        closure_date = faculty_academic_year.academic_year.new_closure_date
         if datetime.date.today() > closure_date:
             messages.error(request,f'Clousure date ({closure_date.strftime("%d %B %Y")}) has passed. New contributions cannot be posted.😩 ')
             return redirect(request.META['HTTP_REFERER'])
         else:
-            form = ContributionForm(initial={'author':student_post,'faculty':faculty})
+            form = ContributionForm(initial={'author':student_post,'faculty':faculty_academic_year})
             context = {'form' : form }
     else:
         form = ContributionForm(request.POST,request.FILES)
@@ -309,18 +309,19 @@ def overview(request):
     else:
         academic_year_last = AcademicYear.objects.all().first()
     academic_year = AcademicYear.objects.all()
-    faculty = Faculty.objects.filter(facultyacademicyear=academic_year_last)
+    faculty = Faculty.objects.filter(facultyacademicyear__academic_year=academic_year_last)
+    print(faculty.first().name)
     with_comments = []
     contribution = []
     contributor = [] 
     without_comments = []
     for facultyy in faculty:
-        contribution_count = Contribution.objects.filter(faculty=facultyy).count()
-        contributions = Contribution.objects.filter(faculty=facultyy)
-        student_count = Student.objects.filter(faculty=facultyy).count()
-        total_comment = Comment.objects.filter(post__faculty=facultyy).count()
+        contribution_count = Contribution.objects.filter(faculty__faculty=facultyy).count()
+        contributions = Contribution.objects.filter(faculty__faculty=facultyy)
+        student_count = Student.objects.filter(faculty__faculty=facultyy).count()
+        total_comment = Comment.objects.filter(post__faculty__faculty=facultyy).count()
         without_comment = 0
-        contributionn = Contribution.objects.filter(faculty=facultyy,comment__isnull = True)
+        contributionn = Contribution.objects.filter(faculty__faculty=facultyy,comment__isnull = True)
         for contributionss in contributionn:
             if datetime.date.today() > contributionss.date_posted.date() + timedelta(days = 14):
                 without_comment += 1

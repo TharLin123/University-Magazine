@@ -92,7 +92,7 @@ class FacultyAcademicYear(models.Model):
         verbose_name_plural = "Faculties' Academic Years"
 
     def __str__(self):
-        return f'{self.faculty.get_name_display()}({self.academic_year.get_academic_year_display()})'
+        return f'{self.faculty.get_name_display()} ({self.academic_year.get_academic_year_display()} Academic Year)'
 
 
 class Student(User):

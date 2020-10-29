@@ -1,11 +1,11 @@
 from django.db import models
-from users.models import Student,Marketing_Coordinator,Faculty
+from users.models import Student,Marketing_Coordinator,Faculty,FacultyAcademicYear
 
 class Contribution(models.Model):
     title = models.CharField(max_length=100,null=True,verbose_name='Title',default = 'No Title')
     author = models.ForeignKey(Student,on_delete=models.CASCADE,verbose_name='Author')
     date_posted = models.DateTimeField(null=True,verbose_name='Date Posted',auto_now=True)
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, verbose_name='Faculty',null=True)
+    faculty = models.ForeignKey(FacultyAcademicYear, on_delete=models.CASCADE, verbose_name='Faculty',null=True)
     images = models.ImageField(upload_to='contributions',verbose_name='Image for Paragraph-1',null=True)
     images2 = models.ImageField(upload_to='contributions',verbose_name='Image for Paragraph-2',null=True)
     images3 = models.ImageField(upload_to='contributions',verbose_name='Image for Paragraph-3',null=True)
