@@ -35,7 +35,7 @@ def post_contributions(request):
     else:
         form = ContributionForm(request.POST,request.FILES)
         files = request.FILES.getlist('images')
-        context = {'form' : form }
+        context = {'form' : form }  
         if form.is_valid:
             instance = form.save(commit=False)
             instance.images = files[0]
