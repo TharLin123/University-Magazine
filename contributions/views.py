@@ -151,7 +151,7 @@ def detail_contribution(request,pk):
 def home(request):
     if request.user.role == 'MC':
         marketing_coordinator = Marketing_Coordinator.objects.get(id=request.user.id)
-        contributions = Contribution.objects.filter(faculty=marketing_coordinator.faculty)
+        contributions = Contribution.objects.filter(faculty__faculty=marketing_coordinator.faculty)
         count = contributions.count() 
     elif request.user.role == 'S':
         contributions = Contribution.objects.filter(author = request.user)
@@ -235,7 +235,7 @@ def delete_comment(request,pk):
 @login_required
 def selected(request):
     marketing_coordinator = Marketing_Coordinator.objects.get(id=request.user.id)
-    contributions = Contribution.objects.filter(faculty=marketing_coordinator.faculty,is_selected=True)
+    contributions = Contribution.objects.filter(faculty__faculty=marketing_coordinator.faculty,is_selected=True)
     count = contributions.count() 
     context = { 
         "contributions" : contributions,
@@ -247,7 +247,7 @@ def selected(request):
 @login_required
 def not_selected(request):
     marketing_coordinator = Marketing_Coordinator.objects.get(id=request.user.id)
-    contributions = Contribution.objects.filter(faculty=marketing_coordinator.faculty,is_selected=False)
+    contributions = Contribution.objects.filter(faculty__faculty=marketing_coordinator.faculty,is_selected=False)
     count = contributions.count() 
     context = { 
         "contributions" : contributions,

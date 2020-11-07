@@ -88,7 +88,7 @@ class FacultyAcademicYear(models.Model):
 
     class Meta:
         unique_together = ('academic_year','faculty')
-        ordering = ['-academic_year']
+        ordering = ['academic_year']
         db_table = 'Faculty Academic Year'
         verbose_name = "Faculty Academic Year"
         verbose_name_plural = "Faculties' Academic Years"

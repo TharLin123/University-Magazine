@@ -139,7 +139,6 @@ class AuthorAdmin(admin.ModelAdmin):
 
 @admin.register(FacultyAcademicYear)
 class AuthorAdmin(admin.ModelAdmin):
-    ordering = ['-academic_year']
     list_display = ('academic_year','faculty')
     list_display_links = ('academic_year','faculty')
 
